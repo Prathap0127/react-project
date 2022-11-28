@@ -2,9 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 function NavBar() {
-    return <>
-        {/* <!-- nav bar --> */}
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    return <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <span className="navbar-brand">Jewel Shop</span>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,16 +26,13 @@ function NavBar() {
                 <form className="form-inline my-2 my-lg-0">
                     <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
                     <Link to='/login'>
-                        <button className="btn btn-secondary" type="button" data-toggle="dropdown" aria-expanded="false">
-                            Login
-                        </button>
+                        <button className="btn btn-secondary" type="button" data-toggle="dropdown" aria-expanded="false">Login</button>
                     </Link>
                 </form>
             </div>
         </nav>
 
 
-    </>
 }
 
 export default NavBar

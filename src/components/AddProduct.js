@@ -1,10 +1,13 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Form } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import AdminSidebar from './AdminSidebar'
 
 function AddProduct() {
     let navigate=useNavigate()
+    let params=useParams()
+    // console.log(params.id)
     let [productName, setPName]=useState("")
     let [productMaterial, setPMaterial] = useState("")
     let [productCategory, setPCategory] = useState("")
@@ -15,9 +18,9 @@ function AddProduct() {
 
     let handleProduct= async(event)=>{
         event.preventDefault()
-        console.log("hai")
+        // console.log("hai")
         let pData={
-            name:productName,
+            productName:productName,
             productType:productMaterial,
             productCat:productCategory,
             productPrice:productPrice,
@@ -25,33 +28,78 @@ function AddProduct() {
             productURL:productURL
 
         }
-        try{
-            let getPData=await axios.post('https://6350def9dfe45bbd55b0529b.mockapi.io/product',pData)
-            if (getPData.status===201){
-                alert('product added ')
-                navigate('/all-product')
-                
-
+        if(params.id){
+            try{
+                let res = await axios.put(`https://6350def9dfe45bbd55b0529b.mockapi.io/products/${params.id}`,pData)
+                if(res.status===200){
+                    alert('Product updated')
+                    navigate('/all-product')
+                }
             }
+            catch(err){
+                console.log(err)
+            }
+        }
+        else{
 
+            try{
+                let getPData=await axios.post('https://6350def9dfe45bbd55b0529b.mockapi.io/products',pData)
+                if (getPData.status===201){
+                    alert('product added ')
+                    navigate('/all-product')
+                }
+    
+    
+            }
+            catch(err){
+                console.log(err)
+            }
+        }
 
+    }
+
+    let getPdata = async()=>{
+        try{
+
+            let res = await axios.get(`https://6350def9dfe45bbd55b0529b.mockapi.io/products/${params.id}`)
+            if (res.status===200){
+                setPName(res.data.productName)
+                setPMaterial(res.data.productType)
+                setPCategory(res.data.productCat)
+                setPPrice(res.data.productPrice)
+                setPActualPrice(res.data.productActualPrice)
+                setPURL(res.data.productURL)
+            }
+            else{
+                navigate('/add-product')
+            }
         }
         catch(err){
             console.log(err)
         }
-
     }
-  return <div className='container-fluid'>
+
+    useEffect(()=>{
+        if(params.id){
+            getPdata()
+        }
+
+    },[])
+    
+
+  return <>
+  <AdminSidebar/>
+  <div className='container-fluid'>
     <h2 className='text-center'> Add Product</h2>
     <Form className="formData">
                     <div className="form-row">
                         <div className="form-group col-md-4">
                             <Form.Label>Product Title</Form.Label>
-                            <input type="text" className="form-control" onChange={(e)=>setPName(e.target.value)} />
+                            <input type="text" className="form-control" value={productName} onChange={(e)=>setPName(e.target.value)} />
                         </div>
                         <div className="form-group col-md-4">
                             <Form.Label> Product Material</Form.Label>
-                            <select className="form-control" onChange={(e)=>setPMaterial(e.target.value)} >
+                            <select className="form-control"  value={productMaterial} onChange={(e)=>setPMaterial(e.target.value)} >
                                 <option>Choose...</option>
                                 <option value="Platinum">Platinum</option>
                                 <option value="Gold(22K)">Gold(22K)</option>
@@ -61,7 +109,7 @@ function AddProduct() {
                         </div>
                         <div className="form-group col-md-4">
                             <Form.Label> Product Category</Form.Label>
-                            <select className="form-control" onChange={(e)=>setPCategory(e.target.value)}>
+                            <select className="form-control" value={productCategory} onChange={(e)=>setPCategory(e.target.value)}>
                                 <option>Choose...</option>
                                 <option value="Ring">Ring</option>
                                 <option value="Chain">Chain</option>
@@ -73,15 +121,15 @@ function AddProduct() {
                         </div>
                         <div className="form-group col-md-4">
                             <Form.Label>Product Price</Form.Label>
-                            <input type="text" className="form-control" onChange={(e)=>setPPrice(e.target.value)}/>
+                            <input type="text" className="form-control" value={productPrice} onChange={(e)=>setPPrice(e.target.value)}/>
                         </div>
                         <div className="form-group col-md-4">
                             <Form.Label>Product Actual Price</Form.Label>
-                            <input type="text" className="form-control" onChange={(e)=>setPActualPrice(e.target.value)}/>
+                            <input type="text" className="form-control" value={productActualPrice} onChange={(e)=>setPActualPrice(e.target.value)}/>
                         </div>
                         <div className="form-group col-md-4">
                             <Form.Label>Product Image URL</Form.Label>
-                            <input type="text" className="form-control" onChange={(e)=>setPURL(e.target.value)}/>
+                            <input type="text" className="form-control" value={productURL} onChange={(e)=>setPURL(e.target.value)}/>
                         </div>
                     </div>
                     <button type="submit" className="btn btn-primary offset-5" onClick={(event)=>handleProduct(event)}>Submit</button>
@@ -90,6 +138,7 @@ function AddProduct() {
 
 
   </div>
+  </>
 }
 
 export default AddProduct

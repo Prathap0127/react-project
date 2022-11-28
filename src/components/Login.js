@@ -19,8 +19,9 @@ function Login() {
             console.log(userData)
             let loginD = userData.filter((e) => {
                 return (e.email === email && e.password === password)
+                
             })
-            console.log(loginD[0].email)
+            // console.log(loginD[0].email)
             if (loginD.length === 1) {
                 alert('login Sucessfull')
                 navigate('/dashboard')

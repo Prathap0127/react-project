@@ -1,9 +1,10 @@
 import axios from 'axios'
 import React, {useEffect, useState} from 'react'
-import ProductCard from './ProductCard'
-import SideBar from './SideBar'
+import AdminProductCard from './AdminProductCard'
+import AdminSidebar from './AdminSidebar'
 
-function AllProduct() {
+
+function AdminProduct() {
     let [pdata ,setPdata] = useState([])
 
     let getProduct = async()=>{
@@ -24,7 +25,7 @@ function AllProduct() {
 
 
   return <>
-  <SideBar/>
+  <AdminSidebar/>
   <div className="container-fluid">
         <div className="d-sm-flex align-items-center justify-content-center mb-4 mt-2">
           <h1 className="h3 mb-0 text-gray-800">Products</h1>
@@ -34,7 +35,7 @@ function AllProduct() {
 
           pdata.map((e)=>{
             console.log(e)
-            return (<ProductCard key={e.id} data={{ id:e.id,name:e.productName,productURL:e.productURL,productPrice:e.productPrice,productActualPrice:e.productActualPrice}}/>);
+            return (<AdminProductCard key={e.id} data={{ id:e.id,name:e.productName,productURL:e.productURL,productPrice:e.productPrice,productActualPrice:e.productActualPrice}}/>);
 
           })
 }
@@ -43,7 +44,6 @@ function AllProduct() {
 
       </div>
       </>
-
 }
 
-export default AllProduct
+export default AdminProduct

@@ -4,8 +4,8 @@ import aboutImg from './images/about/about.jpg'
 import NavBar from './NavBar'
 
 function Home() {
-  return <>
-    <NavBar/>
+  return <div>
+  <NavBar/>
   <PageSlider/>
   <section id="about">
         <div className="container">
@@ -26,7 +26,7 @@ function Home() {
             </div>
         </div>
     </section>
-  </>
+    </div>
 }
 
 export default Home
